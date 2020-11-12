@@ -1,0 +1,5 @@
+type Chat @model {
+  id: ID!
+  name: String!
+  chat: String!
+}
