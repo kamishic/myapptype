@@ -3,8 +3,10 @@ export const postArticleAction = () => {
   return {
     type: "POST_ARTICLE",
     payload:{
-      title: "testTitle",
-      content: "testContent"
+      blog:{
+        title: "tilte changed by button",
+        content: "content changed by button"
+      }
     }
   }
 }

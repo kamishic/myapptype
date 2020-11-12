@@ -1,15 +1,22 @@
 import * as React from 'react';
 import './App.css';
+
 import Blog from './reducks/blog/Blog'
+import {postArticleAction} from './reducks/blog/actions'
+
 import {useDispatch,useSelector} from 'react-redux'
+import {appState} from './reducks/store/initialState'
 
 import {mytest} from './myexercise/myexercise'
 
+
+
 const App: React.FC = () => {
+
   const dispatch = useDispatch()
-  const selector = useSelector((state) => state)
-  console.log(selector)
-    
+  const blogSelector = useSelector<appState,appState["blog"]>((state) => state.blog)
+
+
   return (
     <React.Fragment>
       <ul>
@@ -17,6 +24,9 @@ const App: React.FC = () => {
         <li>{mytest<number>(1)}</li>
       </ul>
       <Blog/>
+      <button onClick = {() => dispatch(postArticleAction())}>
+        投稿
+      </button>
     </React.Fragment>
   );
 }

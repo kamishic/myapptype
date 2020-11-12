@@ -9,6 +9,7 @@ export default function createStore(){
   return reduxCreateStore(
     combineReducers({
       blog: BlogReducer
-    })
+    }
+    )
   )
 }
