@@ -13,6 +13,25 @@ import {appState} from './reducks/store/initialState'
 
 import {mytest} from './myexercise/myexercise'
 
+import Amplify, * as AmplifyModules from 'aws-amplify'
+import awsconfig from './aws-exports'
+Amplify.configure({
+  ...awsconfig,                               
+  aws_appsync_authenticationType: "API_KEY"
+})
+
+const postTest = async () => {
+  const chatPost = { name : "testClientuser1", chat: "2from client ,hello" }  
+  try {
+    console.log("api start")
+    await  API.graphql(graphqlOperation(createChat, { input: chatPost }))
+    console.log("api complete")
+  } catch {
+    console.log("api error")
+    console.log()
+  }
+
+}
 
 
 const App: React.FC = () => {
@@ -20,8 +39,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch()
   const blogSelector = useSelector<appState,appState["blog"]>((state) => state.blog)
 
-  const chatPost = { name : "testClientuser", chat: "from client ,hello" }  
-  API.graphql(graphqlOperation(createChat, { input: chatPost }));
+  postTest()
 
   return (
     <React.Fragment>
