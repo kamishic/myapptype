@@ -6,19 +6,45 @@ import PubSub from '@aws-amplify/pubsub';
 import {createChat} from './graphql/mutations'
 
 import Blog from './reducks/blog/Blog'
-import {postArticleAction} from './reducks/blog/actions'
 
-import {useDispatch,useSelector} from 'react-redux'
-import {appState} from './reducks/store/initialState'
+
 
 import {mytest} from './myexercise/myexercise'
+//material-ui
 
+import {createStyles,makeStyles} from '@material-ui/styles'
+
+//templates
+import Header from './templates/Header'
+import Contents from './templates/Contents'
+import Footer from './templates/Footer'
+//aws認証？
 import Amplify, * as AmplifyModules from 'aws-amplify'
 import awsconfig from './aws-exports'
 Amplify.configure({
   ...awsconfig,                               
   aws_appsync_authenticationType: "API_KEY"
 })
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    "button": {
+      borderColor: "#FFB549",
+      color: "#FFB549",
+      fontWeight:600,
+      margin:"8px",
+      "&:hover": {
+        backgroundColor: "#FFB549",
+        color:"#fff"
+      }
+    },
+    "text":{
+
+    }
+
+  })
+)
+
 
 const postTest = async () => {
   const chatPost = { name : "testClientuser1", chat: "2from client ,hello" }  
@@ -36,21 +62,15 @@ const postTest = async () => {
 
 const App: React.FC = () => {
 
-  const dispatch = useDispatch()
-  const blogSelector = useSelector<appState,appState["blog"]>((state) => state.blog)
 
-  postTest()
+
+  //postTest()
 
   return (
     <React.Fragment>
-      <ul>
-        <li>{mytest<string>("test")}</li>
-        <li>{mytest<number>(1)}</li>
-      </ul>
-      <Blog/>
-      <button onClick = {() => dispatch(postArticleAction())}>
-        投稿
-      </button>
+      <Header />
+      <Contents />
+      <Footer />
     </React.Fragment>
   );
 }
