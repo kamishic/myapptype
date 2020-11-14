@@ -1,7 +1,9 @@
 import {
   createStore as reduxCreateStore,
-  combineReducers
+  combineReducers,
+  applyMiddleware
 } from "redux"
+import thunk from "redux-thunk"
 
 import {BlogReducer} from "../blog/reducers"
 
@@ -10,6 +12,9 @@ export default function createStore(){
     combineReducers({
       blog: BlogReducer
     }
+    ),
+    applyMiddleware(
+      thunk
     )
   )
 }
