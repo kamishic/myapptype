@@ -19,7 +19,8 @@ export const BlogReducer = (state: appState = initialState, action:any) => {
         ...action.payload
       }
     default :
-      return state
+      console.log("BlogReducer default part")
+      return {...state}
   }
 
 }
