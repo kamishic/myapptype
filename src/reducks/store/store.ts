@@ -5,12 +5,12 @@ import {
 } from "redux"
 import thunk from "redux-thunk"
 
-import {BlogReducer} from "../blog/reducers"
+import {ChatReducer} from "../chat/reducers"
 
 export default function createStore(){
   return reduxCreateStore(
     combineReducers({
-      blog: BlogReducer
+      chat: ChatReducer
     }
     ),
     applyMiddleware(

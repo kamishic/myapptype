@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React,{useEffect} from 'react';
 import styled from "styled-components";
 //aws
 import API, { graphqlOperation } from '@aws-amplify/api';
 import PubSub from '@aws-amplify/pubsub';
-import {createChat} from '../graphql/mutations'
-import {listChats} from '../graphql/queries'
+import {getChat, listChats} from '../graphql/queries'
  
 //material ui
 import Grid from '@material-ui/core/Grid';
@@ -15,7 +14,9 @@ import ChatIcon from '@material-ui/icons/Chat';
 import {useDispatch,useSelector} from 'react-redux'
 //
 import {appState} from '../reducks/store/initialState'
-import {postArticleAction} from '../reducks/blog/actions'
+import {getChats} from '../reducks/chat/actions'
+import {fetchChats,createChat} from '../reducks/chat/operations'
+import { getChatList } from '../reducks/chat/selectors';
 
 //material ui into styled-components
 const Wraper = styled.div`
@@ -37,32 +38,20 @@ const NameField = styled(TextField)`
 const ChatButton = styled(Button)`
   background-color = black;
 `;
-//test
-const getChats = async () => {
-  const chatPost = { name : "testClientuser1", chat: "2from client ,hello" }  
-  try {
-    console.log("api start")
-    const apiResult: any = await  API.graphql(graphqlOperation(listChats, { }))
-    const chats: any= apiResult.data.listChats.items
-    let list: any = [];
-    for(let i in chats){
-      list.push(chats[i]);
-    }
-    console.log(list)
-    console.log("api complete")
-    return list
-  } catch {
-    console.log("api error")
-    console.log()
-  }
-}
 //
 const Contents = () => {
   const dispatch = useDispatch()
-  const blogSelector = useSelector<appState,appState["blog"]>((state) => state.blog)
+  const chats = useSelector<any,any>( state => state)
+  console.log("Contents selector")
+  console.log(chats.chat.list)
+  //const chats = getChatList(selector)
+  //const blogSelector = useSelector<appState,appState["chat"]>((state) => state.chat)
 
-  const chats: any = getChats()
-  console.log(chats[0])
+  useEffect( () => {
+    dispatch(fetchChats())}
+    ,[]
+    )
+
   return (
     <Wraper>
       <MyGrid container>
@@ -76,6 +65,11 @@ const Contents = () => {
         <MyGrid item xs={7}>myGrid 3:7:2
           <ChartWrapper>
             <div>
+              {chats.chat.list.map(chat => (
+                  <div>{chat.chat}</div>
+                  )
+                )
+              }
             </div>
             <div>
               <ChatField placeholder={"つぶやき"}/>
@@ -87,14 +81,7 @@ const Contents = () => {
                 color="primary"
                 size="small"
                 endIcon={<ChatIcon/>} 
-                onClick = {() => getChats()}
-              />
-              <ChatButton
-                variant="contained"
-                color="primary"
-                size="small"
-                endIcon={<ChatIcon/>} 
-                onClick = {() => dispatch(postArticleAction())}
+                onClick = {() => createChat("テストチャット","テストユーザー")}
               />              
             </div>
           </ChartWrapper>

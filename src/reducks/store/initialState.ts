@@ -1,22 +1,16 @@
 import {useDispatch,useSelector} from 'react-redux'
 
+export interface chatState {
+  chat: string
+  name: string
+}
+
 export interface appState {
-  blog:{
-    title: string,
-    content: string
-  },
-  users:{
-  }
+  list: chatState[]
 }
 
 const initialState: appState = {
-  blog:{
-    title: "initialTitle",
-    content: "initialContent"
-  },
-  users:{
-
-  }
+    list: []
 }
 
 export default initialState
