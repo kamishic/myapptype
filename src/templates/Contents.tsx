@@ -4,12 +4,22 @@ import styled from "styled-components";
 import API, { graphqlOperation } from '@aws-amplify/api';
 import PubSub from '@aws-amplify/pubsub';
 import {getChat, listChats} from '../graphql/queries'
- 
+import {onCreateChat} from '../graphql/subscriptions'
+
 //material ui
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import ChatIcon from '@material-ui/icons/Chat';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardAction from '@material-ui/core/CardActionArea';
 //redux
 import {useDispatch,useSelector} from 'react-redux'
 //
@@ -56,14 +66,23 @@ const Contents = () => {
   const onChatChange = (e) => {
     setChat(e.target.value)
   }
+  const onUserChange = (e) => {
+    setUser(e.target.value)
+  }
 
+/*
+  console.log("subscription api start")
+  const x = API.graphql(graphqlOperation(onCreateChat))
+  console.log(x)
+  console.log("subscription api end")
+*/
   const onClickCreateChat = async (e) => {
-    await createChat(chat,"テストユーザー")
+    await createChat(chat,user)
     dispatch(fetchChats())
     setChat("")
     setUser("")
   }
-
+  
   return (
     <Wraper>
       <MyGrid container>
@@ -77,16 +96,27 @@ const Contents = () => {
         <MyGrid item xs={7}>myGrid 3:7:2
           <ChartWrapper>
             <div>
-              {chats.chat.list.map(chatMapped => (
-                  <div>{chatMapped.chat}</div>
-                  )
+              {chats.chat.list.map( (chatMapped) => { 
+                  return (
+                  <>
+                    <Card>
+                      <CardContent>
+                        {chatMapped.chat}
+                      </CardContent>
+                      <CardAction>
+                        {chatMapped.name}
+                        </CardAction>
+                    </Card>
+                  </>   
+                  )             
+                }
                 )
-              }
+             }
             </div>
             <div>
               <ChatField placeholder={"つぶやき"} onChange = {onChatChange} value={chat}/>
             </div>
-              <NameField placeholder={"お名前"} />
+              <NameField placeholder={"お名前"}  onChange = {onUserChange} value={user}/>
             <div>
               <ChatButton
                 variant="contained"
