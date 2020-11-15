@@ -87,7 +87,7 @@ const Contents = () => {
     <Wraper>
       <MyGrid container>
         <MyGrid item xs={3}>
-          <ul>実装予定サービス
+          <ul>サービス
             <li>認証</li>
             <li>チャット</li>
             <li>ToDo</li>
