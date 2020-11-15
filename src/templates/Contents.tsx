@@ -51,7 +51,7 @@ const Contents = () => {
     ,[]
     )
   
-  const[chat,setChat] = useState("1")
+  const[chat,setChat] = useState("")
   const[user,setUser] = useState("")
   const onChatChange = (e) => {
     setChat(e.target.value)
@@ -60,6 +60,8 @@ const Contents = () => {
   const onClickCreateChat = async (e) => {
     await createChat(chat,"テストユーザー")
     dispatch(fetchChats())
+    setChat("")
+    setUser("")
   }
 
   return (
