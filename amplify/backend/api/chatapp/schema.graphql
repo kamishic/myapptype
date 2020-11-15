@@ -1,5 +1,6 @@
-type Chat @model {
+type Chat {
   id: ID!
   name: String!
   chat: String!
+  createdAt: AWSDateTime!
 }

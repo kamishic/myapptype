@@ -35,8 +35,16 @@ export const fetchChats = () =>{
     console.log("api complete")
     return chats.data.listChats.items */
     const chatList =  apiData.data.listChats.items
-
-    dispatch(fetchChatsAction(chatList))
+    // 降順
+    const chatListSorted = 
+      chatList.sort(function(a, b) {
+        if(a.createdAt<b.createdAt) return -1;
+        if(a.createdAt > b.createdAt) return 1;
+        return 0;
+      })
+    console.log("chatListSorted")
+    console.log(chatListSorted)
+    dispatch(fetchChatsAction(chatListSorted))
 
   }
 }

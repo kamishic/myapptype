@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useState,useEffect} from 'react';
 import styled from "styled-components";
 //aws
 import API, { graphqlOperation } from '@aws-amplify/api';
@@ -46,11 +46,21 @@ const Contents = () => {
   console.log(chats.chat.list)
   //const chats = getChatList(selector)
   //const blogSelector = useSelector<appState,appState["chat"]>((state) => state.chat)
-
   useEffect( () => {
     dispatch(fetchChats())}
     ,[]
     )
+  
+  const[chat,setChat] = useState("1")
+  const[user,setUser] = useState("")
+  const onChatChange = (e) => {
+    setChat(e.target.value)
+  }
+
+  const onClickCreateChat = async (e) => {
+    await createChat(chat,"テストユーザー")
+    dispatch(fetchChats())
+  }
 
   return (
     <Wraper>
@@ -65,14 +75,14 @@ const Contents = () => {
         <MyGrid item xs={7}>myGrid 3:7:2
           <ChartWrapper>
             <div>
-              {chats.chat.list.map(chat => (
-                  <div>{chat.chat}</div>
+              {chats.chat.list.map(chatMapped => (
+                  <div>{chatMapped.chat}</div>
                   )
                 )
               }
             </div>
             <div>
-              <ChatField placeholder={"つぶやき"}/>
+              <ChatField placeholder={"つぶやき"} onChange = {onChatChange} value={chat}/>
             </div>
               <NameField placeholder={"お名前"} />
             <div>
@@ -81,7 +91,7 @@ const Contents = () => {
                 color="primary"
                 size="small"
                 endIcon={<ChatIcon/>} 
-                onClick = {() => createChat("テストチャット","テストユーザー")}
+                onClick = {onClickCreateChat}
               />              
             </div>
           </ChartWrapper>
