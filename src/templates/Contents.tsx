@@ -57,9 +57,37 @@ const Contents = () => {
   //const chats = getChatList(selector)
   //const blogSelector = useSelector<appState,appState["chat"]>((state) => state.chat)
   useEffect( () => {
-    dispatch(fetchChats())}
+    dispatch(fetchChats())
+    console.log("subscription api start")
+    const x = API.graphql(graphqlOperation(onCreateChat))
+
+    const subscription: any = (API.graphql(
+      graphqlOperation(onCreateChat)) )
+      
+    subscription.subscribe({
+      next: ({ value: { data } }) => {
+        dispatch(fetchChats())
+        console.log("data")
+        console.log(data)
+        /*
+        const m = data.onCreateMessage;
+        const message = {
+          _id: m.id || "",
+          createdAt: m.createdAt || 0,
+          text: m.content,
+          user: { _id: m.owner, name: m.owner },
+        };
+          */
+        //setMessages((previousMessages: IMessage[]) =>
+        //  GiftedChat.append(previousMessages, [message as IMessage])
+      }});
+      console.log("x")
+      console.log(x)
+      console.log("subscription api end")
+
+      }
     ,[]
-    )
+  )
   
   const[chat,setChat] = useState("")
   const[user,setUser] = useState("")
